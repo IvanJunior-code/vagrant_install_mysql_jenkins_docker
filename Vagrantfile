@@ -87,8 +87,9 @@ Vagrant.configure("2") do |config|
     mysql -e "create database todo;" && \
     mysql -e "create database todo_dev;" && \
     mysql -e "create database test_todo_dev;" && \
-    mysql -e "grant all privileges on *.* to devops@'%' identified by 'mestre';" && \
-    mysql -e "grant all privileges on *.* to devops_dev@'%' identified by 'mestre';" 
+    mysql -e "grant all privileges on todo.* to devops@'%' identified by 'mestre';" && \
+    mysql -e "grant all privileges on todo_dev.* to devops_dev@'%' identified by 'mestre';" && \
+    mysql -e "grant all privileges on test_todo_dev.* to devops_dev@'%' identified by 'mestre';" 
   SCRIPT
   config.vm.provision "shell", inline: $script_mysql
   config.vm.provision "shell",
