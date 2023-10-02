@@ -81,7 +81,7 @@ Vagrant.configure("2") do |config|
   # Mysql Part
   $script_mysql = <<-SCRIPT
     apt-get update && \
-    apt-get install -y openjdk-8-jdk  mysql-server-5.7 && \
+    apt-get install -y  mysql-server-5.7 && \
     mysql -e "create user 'devops'@'%' identified by 'mestre';"  && \
     mysql -e "create user 'devops_dev'@'%' identified by 'mestre';"  && \
     mysql -e "create database todo;" && \
@@ -97,6 +97,17 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell",
     inline: "service mysql restart"
   config.vm.synced_folder "./configs", "/configs"
+
+  # Java Part
+  config.vm.provision "shell", inline: "sudo apt update && sudo apt install openjdk-17-jre --yes"
+
+  # Jenkins Part
+  $script_install_jenkins = <<-SCRIPT
+    curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null && \
+    echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null && \
+    sudo apt-get update && sudo apt-get install jenkins --yes  
+  SCRIPT
+  config.vm.provision "shell", inline: $script_install_jenkins
 
 # Extra
   config.vm.provision "shell",
