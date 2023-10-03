@@ -7,3 +7,4 @@ docker pull hadolint/hadolint
 
 # Configurando permissão para outros usuários executarem o Docker
 sudo usermod -aG docker jenkins
+sudo usermod -aG docker $USER
